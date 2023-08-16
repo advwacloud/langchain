@@ -343,7 +343,9 @@ class SQLDatabase:
 
     def _get_sample_rows(self, table: Table) -> str:
         # build the select command
-        command = select(table).limit(self._sample_rows_in_table_info)
+
+        tmp = Table(table.name,self._metadata)
+        command = select('*',tmp).limit(self._sample_rows_in_table_info)
 
         # save the columns in string format
         columns_str = "\t".join([col.name for col in table.columns])
