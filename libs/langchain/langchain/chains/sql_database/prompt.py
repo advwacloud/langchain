@@ -29,6 +29,31 @@ PROMPT = PromptTemplate(
 )
 
 
+_hive_prompt = """Given an input question, first create a syntactically correct hive query to run, then look at the results of the query and return the answer. Unless the user specifies in his question a specific number of examples he wishes to obtain, always limit your query to at most {top_k} results. You can order the results by a relevant column to return the most interesting examples in the database.
+
+Never query for all the columns from a specific table, only ask for a the few relevant columns given the question.
+
+Pay attention to use only the column names that you can see in the schema description. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which table.
+
+請注意! SQLQuery中如果有join, table一定都要配合別名, 例如, select * from tbl inner join tb2 on tbl1.aaa=tbl2.aaa 一定要改寫成 select * from tbl as a inner join tb2 as b on a.aaa=b.aaa.
+
+
+Use the following format:
+
+Question: Question here
+SQLQuery: SQL Query to run
+SQLResult: Result of the SQLQuery
+Answer: Final answer here
+
+"""
+
+
+HIVE_PROMPT = PromptTemplate(
+    input_variables=["input", "table_info", "top_k"],
+    template=_hive_prompt + PROMPT_SUFFIX,
+)
+
+
 _DECIDER_TEMPLATE = """Given the below input question and list of potential tables, output a comma separated list of the table names that may be necessary to answer this question.
 
 Question: {query}
@@ -260,4 +285,5 @@ SQL_PROMPTS = {
     "sqlite": SQLITE_PROMPT,
     "clickhouse": CLICKHOUSE_PROMPT,
     "prestodb": PRESTODB_PROMPT,
+    "hive": HIVE_PROMPT,
 }
