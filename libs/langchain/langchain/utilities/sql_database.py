@@ -264,7 +264,10 @@ class SQLDatabase:
     @property
     def dialect(self) -> str:
         """Return string representation of dialect to use."""
-        return self._engine.dialect.name
+        dialect_name = self._engine.dialect.name
+        if isinstance(dialect_name, bytes):
+          dialect_name = dialect_name.decode()
+        return dialect_name
 
     def get_usable_table_names(self) -> Iterable[str]:
         """Get names of tables available."""
