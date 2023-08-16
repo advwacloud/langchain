@@ -362,7 +362,9 @@ class SQLDatabase:
 
         # in some dialects when there are no rows in the table a
         # 'ProgrammingError' is returned
-        except ProgrammingError:
+        except Exception as e:
+            print("#### failed to get sample rows ####")
+            print(str(e))
             sample_rows_str = ""
 
         return (
