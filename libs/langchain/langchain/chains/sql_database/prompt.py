@@ -36,7 +36,7 @@ Never query for all the columns from a specific table, only ask for a the few re
 Pay attention to use only the column names that you can see in the schema description. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which table.
 
 請注意! SQLQuery中如果有join, table一定都要配合別名, 例如, select * from tbl inner join tb2 on tbl1.aaa=tbl2.aaa 一定要改寫成 select * from tbl as a inner join tb2 as b on a.aaa=b.aaa.
-
+請注意! SQLQuery不要有換行.
 
 Use the following format:
 
