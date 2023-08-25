@@ -37,6 +37,7 @@ Pay attention to use only the column names that you can see in the schema descri
 
 請注意! SQLQuery中如果有join, table一定都要配合別名, 例如, select * from tbl inner join tb2 on tbl1.aaa=tbl2.aaa 一定要改寫成 select * from tbl as a inner join tb2 as b on a.aaa=b.aaa.
 請注意! SQLQuery不要有換行.
+請注意!sql中不要使用`schema`.`table`, 而是使用`schema.table`.
 
 Use the following format:
 
