@@ -1,6 +1,7 @@
 # flake8: noqa
 from langchain.output_parsers.list import CommaSeparatedListOutputParser
 from langchain.prompts.prompt import PromptTemplate
+from datetime import datetime
 
 
 PROMPT_SUFFIX = """Only use the following tables:
@@ -29,6 +30,9 @@ PROMPT = PromptTemplate(
 )
 
 
+date_hint = "Current Date is: " +  str(datetime.utcnow()) + ".\n\n\n"
+
+
 _hive_prompt = """Given an input question, first create a syntactically correct hive query to run, then look at the results of the query and return the answer. Unless the user specifies in his question a specific number of examples he wishes to obtain, always limit your query to at most {top_k} results. You can order the results by a relevant column to return the most interesting examples in the database.
 
 Never query for all the columns from a specific table, only ask for a the few relevant columns given the question.
@@ -38,6 +42,14 @@ Pay attention to use only the column names that you can see in the schema descri
 請注意! SQLQuery中如果有join, table一定都要配合別名, 例如, select * from tbl inner join tb2 on tbl1.aaa=tbl2.aaa 一定要改寫成 select * from tbl as a inner join tb2 as b on a.aaa=b.aaa.
 請注意! SQLQuery不要有換行.
 請注意! SQLQuery不要有換行中不要使用`schema`.`table`, 而是使用`schema.table`.
+請注意! SQLQuery中的字段需要跳脫!
+請注意! SQLQuery中如果有sum(), 該字段請用別名, 別名的名稱跟原本的字段相同, 注意 as的字段要用``跳脫, ex. as `col1`, 而不要用as col1.
+請注意! SQLQuery中如果要使用DATE_FORMAT, 參數請遵照spark的規範.
+請注意! SQLQuery中如果要使用DATE_SUB function, 第二個參數是天數, 禁止使用INTERVAL 6 MONTH這種寫法.
+請注意! 如果Question中提及"本月", 就使用spark的current就可以了.
+請注意! 如果SQLQuery中原始字段是中文, 那別名也要是中文.
+
+
 
 Use the following format:
 
@@ -51,7 +63,7 @@ Answer: Final answer here
 
 HIVE_PROMPT = PromptTemplate(
     input_variables=["input", "table_info", "top_k"],
-    template=_hive_prompt + PROMPT_SUFFIX,
+    template=date_hint+_hive_prompt + PROMPT_SUFFIX,
 )
 
 
