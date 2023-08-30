@@ -45,7 +45,7 @@ Pay attention to use only the column names that you can see in the schema descri
 請注意! SQLQuery中的字段需要跳脫!
 請注意! SQLQuery中如果有sum(), 該字段請用別名, 別名的名稱跟原本的字段相同, 注意 as的字段要用``跳脫, ex. as `col1`, 而不要用as col1.
 請注意! SQLQuery中如果要使用DATE_FORMAT, 參數請遵照spark的規範.
-請注意! SQLQuery中如果要使用DATE_SUB function, 第二個參數是天數, 禁止使用INTERVAL 6 MONTH這種寫法.
+請注意! SQLQuery中如果要使用DATE_SUB function, 第二個參數是天數, 禁止使用INTERVAL N MONTH這種寫法, 例如INTERVAL 6 MONTH是不合法的.
 請注意! 如果Question中提及"本月", 就使用spark的current就可以了.
 請注意! 如果SQLQuery中原始字段是中文, 那別名也要是中文.
 
